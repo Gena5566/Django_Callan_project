@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Videos</title>
+</head>
+<body>
+    <div class="home-preview">
+            <a href="{% url 'index' %}">
+                <h1 class="home-title">Home</h1>
+            </a>
+    </div>
+
+    <div class="list-preview">
+            <a href="{% url 'youtube_videos' %}">
+                <h1 class="list-title">Back</h1>
+            </a>
+    </div>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube Videos</h1>
+    {% if videos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Video Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for video in videos %}
+                    <tr>
+                        <td>
+                            <a href="{{ video.url }}" target="_blank">{{ video.title }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No videos available.</p>
+    {% endif %}
+</body>
+</html>

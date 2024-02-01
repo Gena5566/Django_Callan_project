@@ -1,0 +1,61 @@
+{% extends 'base_templates/base.html' %}
+
+{% block title %}Quiz{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<header class="masthead" style="background-image: url({% static 'assets/img/callan-method-logo.jpg'%});background-size: cover; background-position: center center; height: 550px;">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h2>English Word Quiz</h2>
+                        <h3>Stage 4</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% if words %}
+        <form method="post" action="{% url 'word_quiz' %}">
+            {% csrf_token %}
+            {% for word in words %}
+                <div class="{% if is_correct %}correct{% else %}incorrect{% endif %}">
+                    <label for="{{ word.russian_word }}">{{ word.russian_word }}</label>
+                    <input type="text" id="{{ word.russian_word }}" name="{{ word.russian_word }}">
+                </div>
+            {% endfor %}
+            <button type="submit">Submit</button>
+        </form>
+
+        <h2>Your Score: {{ score }} / {{ max_score }} ({{ percentage }}%)</h2>
+
+        <h3>Answers:</h3>
+        <ul>
+            {% for word, user_answer in user_answers.items %}
+                <li>{{ word }}: {{ word.english_translation }} (Your answer: {{ user_answer }})
+                    {% if not is_correct %}
+                        <span class="text-danger"> (Incorrect)</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No words available for quiz.</p>
+    {% endif %}
+</body>
+</html>
+{% endblock %}
+
+
+
+
+
+

@@ -1,0 +1,124 @@
+{% extends 'base_templates/base.html' %}
+{% block title %}Dictation to text{% endblock %}
+
+{% load static %}
+{% block content %}
+    <header class="masthead" style="background-image: url({% static 'assets/img/home-bg.jpg' %});background-size: cover; background-position: center center; height: 550px;">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h1>Dictation</h1>
+                        <h2>Online</h2>
+                        <span class="subheading">Enter your text, listen, and write dictation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <!-- Форма для ввода текста диктанта -->
+                <form method="post" id="dictationForm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="dictationText" class="form-label">Enter your text:</label>
+                        <textarea class="form-control" id="dictationText" name="text" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="speedFactor" class="form-label">Enter speed factor (select a pronunciation speed value between 0.8 and 1.5):</label>
+                        <input type="text" class="form-control" id="speedFactor" name="speed_factor" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="convertAndPlay()">Convert and Play</button>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+    <script>
+        // Остальной код JavaScript здесь
+        function convertAndPlay() {
+            var formData = new FormData(document.getElementById('dictationForm'));
+            fetch('{% url 'convert_and_play' %}', {
+                method: 'POST',  // Используйте метод POST вместо GET
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Обновите эту часть для обработки воспроизведения аудио
+                    var audioElement = new Audio(data.audio_url);
+                    audioElement.play();
+                } else {
+                    // Обработка ошибки
+                    console.error(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading audio:', error);
+            });
+        }
+
+        // Обработчик события закрытия страницы
+        window.addEventListener('beforeunload', function() {
+            // Получение CSRF-токена из cookies
+            var csrfToken = getCookie('csrftoken');
+
+            // Просто вставьте имя файла в код
+            var file_name = 'speed_changed.mp3';
+
+            // Создаем объект XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+
+            // Устанавливаем метод и URL запроса
+            xhr.open('POST', '/delete_audio_file/', true);
+
+            // Устанавливаем заголовок с CSRF-токеном
+            xhr.setRequestHeader('X-CSRFToken', csrfToken);
+
+            // Устанавливаем обработчик события загрузки
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    console.log('Audio file deleted successfully.');
+                } else {
+                    console.error('Error deleting audio file:', xhr.statusText);
+                }
+            };
+
+            // Устанавливаем обработчик события ошибки
+            xhr.onerror = function() {
+                console.error('Network error deleting audio file.');
+            };
+
+            // Отправляем запрос
+            xhr.send(JSON.stringify({'file_name': file_name}));
+        });
+
+        // Функция для получения значения cookie по имени
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Ищем куку, которая начинается с имени токена
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+{% endblock %}
+
+
+
+
+
+
+

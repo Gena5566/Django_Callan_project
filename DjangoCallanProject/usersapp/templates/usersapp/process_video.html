@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% load static %}
+
+{% block content %}
+    <header class="masthead" style="background-image: url('{% static 'assets/img/haker.jpg' %}'); background-size: cover;">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h1>Login</h1>
+                        <span class="subheading" style="font-size: 30px;">Please enter your login to enter the site</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <body>
+            <video id="localVideo" autoplay muted></video>
+
+
+            <button id="startButton">Start</button>
+            <button id="sentButton">Sent</button>
+
+
+        </body>
+    </main>
+
+    <!-- Переместите скрипт вниз, чтобы он загружался после HTML-содержимого -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="{% static 'js/app.js' %}"></script>
+{% endblock %}
+
+
+

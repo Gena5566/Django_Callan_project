@@ -1,0 +1,31 @@
+<!-- reply_email.html -->
+{% extends 'base_templates/base.html' %}
+
+{% block title %}Contact{% endblock %}
+
+
+{% load static %}
+
+{% block content %}
+  <h1>Reply to Email</h1>
+
+  <p>Original Email:</p>
+  <p><strong>Subject:</strong> {{ email.subject }}</p>
+  <p><strong>Body:</strong> {{ email.body }}</p>
+  <p><strong>Sender:</strong> {{ email.sender }}</p>
+  <p><strong>Sent at:</strong> {{ email.sent_at }}</p>
+
+  <hr>
+
+  <h2>Your Reply</h2>
+  <form method="post" action="{% url 'admin_sentemail_reply' email.id %}">
+    {% csrf_token %}
+    <label for="subject">Subject:</label>
+    <input type="text" name="subject" required>
+    <br>
+    <label for="body">Body:</label>
+    <textarea name="body" required></textarea>
+    <br>
+    <button type="submit">Send Reply</button>
+  </form>
+{% endblock %}

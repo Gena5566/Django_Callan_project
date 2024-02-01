@@ -1,0 +1,81 @@
+{% extends 'base_templates/base.html' %}
+{% block title %}Student’s Book{% endblock %}
+
+{% load static %}
+{% block content %}
+<header class="masthead" style="background-image: url({% static 'assets/img/callanonline-img-5.png'%});background-size: cover; background-position: center center; height: 550px;">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h2>Student’s Book</h2>
+                    <span class="subheading">PDF</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+                <!-- Content Row-->
+                <div class="row gx-4 gx-lg-5">
+                    <div class="col-md-4 mb-5">
+                        <div class="card h-100" data-pdf-url = "{{ '/media/pdf_files/vdoc.pub_callan-method-stage-1.pdf'|safe }}">
+                            <!-- Вставка изображения -->
+                            <img src="{% static 'assets/img/callan_stage_1.png' %}" class="card-img-top">
+                            <div class="card-body">
+                                <h2 class="card-title">Stage 1</h2>
+                                <!-- Другой контент вашей карточки -->
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100" data-pdf-url = "{{ '/media/pdf_files/vdoc.pub_callan-method-stage-2.pdf'|safe }}">
+                        <!-- Вставка изображения -->
+                        <img src=" {% static 'assets/img/callan_stage_2.png' %}" class="card-img-top">
+                            <div class="card-body">
+                                <h2 class="card-title">Stage 2</h2>
+                                <!-- Другой контент вашей карточки -->
+                             </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100" data-pdf-url = "{{ '/media/pdf_files/vdoc.pub_callan-method-stage-3.pdf'|safe }}">
+                        <!-- Вставка изображения -->
+                        <img src=" {% static 'assets/img/callan-stage-3.jpg' %}" class="card-img-top">
+                            <div class="card-body">
+                                <h2 class="card-title">Stage 3</h2>
+                                <!-- Другой контент вашей карточки -->
+                             </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100" data-pdf-url = "{{ '/media/pdf_files/vdoc.pub_callan-method-stage-4.pdf'|safe }}">
+                        <!-- Вставка изображения -->
+                        <img src=" {% static 'assets/img/callan-stage-4.jpg' %}" class="card-img-top">
+                            <div class="card-body">
+                                <h2 class="card-title">Stage 4</h2>
+                                <!-- Другой контент вашей карточки -->
+                             </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var cardElements = document.querySelectorAll('.card');
+
+                cardElements.forEach(function (card) {
+                    card.addEventListener('click', function () {
+                        var pdfUrl = card.getAttribute('data-pdf-url');
+                        if (pdfUrl && pdfUrl !== 'null') {
+                            window.location.href = pdfUrl;
+                        } else {
+                            console.error('PDF URL is not valid:', pdfUrl);
+                        }
+                    });
+                });
+            });
+        </script>
+ {% endblock %}
