@@ -1,0 +1,76 @@
+{% extends 'base_templates/base.html' %}
+{% block title %}Select stage word{% endblock %}
+
+{% load static %}
+{% block content %}
+
+<header class="masthead" style="background-image: url({% static 'assets/img/english911.jpg' %});background-size: cover; background-position: center center; height: 550px;">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h2>The Callan Method in practice</h2>
+                    <span class="subheading">Select your stage</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Content Row-->
+<div class="row gx-4 gx-lg-5">
+    <div class="row gx-4 gx-lg-5">
+        <div class="col-md-4 mb-5">
+            <div class="card h-100">
+                <!-- Обернуть изображение в тег <a> и установить атрибут href -->
+                <a href="{% url 'word_quiz' %}?level=1">
+                    <img src="{% static 'assets/img/callan_stage_1.png' %}" class="card-img-top">
+                </a>
+                <div class="card-body">
+                    <h2 class="card-title">Stage 1</h2>
+                    <!-- Другой контент вашей карточки -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-5">
+            <div class="card h-100">
+                <!-- Обернуть изображение в тег <a> и установить атрибут href -->
+                <a href="{% url 'word_quiz' %}?level=2">
+                    <img src="{% static 'assets/img/callan_stage_2.png' %}" class="card-img-top">
+                </a>
+                <div class="card-body">
+                    <h2 class="card-title">Stage 2</h2>
+                    <!-- Другой контент вашей карточки -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-5">
+            <div class="card h-100">
+                <!-- Обернуть изображение в тег <a> и установить атрибут href -->
+                <a href="{% url 'word_quiz' %}?level=3">
+                    <img src="{% static 'assets/img/callan-stage-3.jpg' %}" class="card-img-top">
+                </a>
+                <div class="card-body">
+                    <h2 class="card-title">Stage 3</h2>
+                    <!-- Другой контент вашей карточки -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-5">
+            <div class="card h-100">
+                <!-- Обернуть изображение в тег <a> и установить атрибут href -->
+                <a href="{% url 'word_quiz' %}?level=4">
+                    <img src="{% static 'assets/img/callan-stage-4.jpg' %}" class="card-img-top">
+                </a>
+                <div class="card-body">
+                    <h2 class="card-title">Stage 4</h2>
+                    <!-- Другой контент вашей карточки -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

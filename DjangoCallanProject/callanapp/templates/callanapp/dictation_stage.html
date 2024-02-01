@@ -1,0 +1,117 @@
+{% extends 'base_templates/base.html' %}
+{% block title %}Dictation stage{% endblock %}
+
+{% load static %}
+{% block content %}
+
+<header class="masthead" style="background-image: url({% static 'assets/img/home-bg.jpg' %});background-size: cover; background-position: center center; height: 550px;">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Dictation stage</h1>
+                    <h2>Enter the stage number to search</h2>
+                    <span class="subheading">Listen, and write dictation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Форма для фильтрации диктантов -->
+<form method="get" id="searchForm">
+    <div class="mb-3">
+        <h2 class="post-title">Enter the stage number to search</h2>
+        <input type="text" class="form-control" id="searchStage" name="stage">
+    </div>
+    <button type="button" class="btn btn-primary" onclick="searchAudioDictations()">Search</button>
+</form>
+
+<!-- Форма для перехода на dictation_to_text.html -->
+<div class="post-preview">
+    <a href="{% url 'dictation_to_text' %}">
+        <h2 class="post-title">Assistance for writing dictation</h2>
+        <h3 class="post-subtitle">Enter your text, listening and writing dictation</h3>
+    </a>
+</div>
+
+<!-- Вывод информации из AudioDictation после фильтрации -->
+<div class="container mt-5" id="audioDictationsContainer">
+    <!-- Здесь будет добавляться информация о диктантах -->
+</div>
+
+<script>
+    function searchAudioDictations() {
+        // Получение значений из формы
+        var stage = document.getElementById('searchStage').value;
+
+        // Формирование URL с параметрами запроса
+        var url = '{% url 'search_audio_dictations' %}?stage=' + encodeURIComponent(stage);
+
+        fetch(url, {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Обновление страницы с новыми данными
+                updatePageContent(data.audio_dictations);
+            } else {
+                // Обработка ошибки
+                console.error(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading audio:', error);
+        });
+    }
+
+    function updatePageContent(audioDictations) {
+        var container = document.getElementById('audioDictationsContainer');
+        container.innerHTML = "";  // Очистка текущего содержимого
+
+        for (var i = 0; i < audioDictations.length; i++) {
+            var audioDictation = audioDictations[i];
+
+            var card = document.createElement('div');
+            card.className = 'card mb-3';
+
+            var cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
+
+            var stageHeader = document.createElement('h5');
+            stageHeader.className = 'card-text';
+            stageHeader.textContent = 'Stage ' + audioDictation.stage;
+
+            var titleHeader = document.createElement('h6');
+            titleHeader.className = 'card-title';
+            titleHeader.textContent = audioDictation.title_text_user;
+
+            var textParagraph = document.createElement('p');
+            textParagraph.className = 'card-text';
+            textParagraph.textContent = audioDictation.text_user;
+
+            var audioElement = document.createElement('audio');
+            audioElement.controls = true;
+
+            var sourceElement = document.createElement('source');
+            sourceElement.src = audioDictation.audio_url;
+            sourceElement.type = 'audio/mp3';
+
+            audioElement.appendChild(sourceElement);
+
+            cardBody.appendChild(stageHeader);
+            cardBody.appendChild(titleHeader);
+            cardBody.appendChild(textParagraph);
+            cardBody.appendChild(audioElement);
+
+            card.appendChild(cardBody);
+            container.appendChild(card);
+        }
+    }
+</script>
+
+{% endblock %}
+
+
+

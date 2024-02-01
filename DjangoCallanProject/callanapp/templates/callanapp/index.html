@@ -1,0 +1,82 @@
+{% extends 'base_templates/base.html' %}
+{% block title %}Home page{% endblock %}
+
+{% load static %}
+{% block content %}
+
+
+
+<header class="masthead" style="background-image: url({% static 'assets/img/foreign_language.jpg'%});background-size: cover; background-position: center center; height: 550px;">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>CallanMethod Learning Platform</h1>
+                    <span class="subheading">The Callan Method in practice</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+            <!-- Content Row-->
+            <div class="row gx-4 gx-lg-5">
+                <div class="col-md-4 mb-5">
+                    <a href="{% url 'dictation_stage' %}">
+                        <div class="card h-100">
+                            <!-- Вставка изображения -->
+                            <img src="{% static 'assets/img/home-bg.jpg'' %}" class="card-img-top">
+                            <div class="card-body">
+                                <h3 class="card-title">Assistance for writing dictation</h3>
+                                <h6 class="card-title">Listening and writing dictation or choose dictation or enter your text</h6>
+                                <!-- Другой контент вашей карточки -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4 mb-5">
+                    <a href="{% url 'select_stage_word' %}">
+                        <div class="card h-100">
+                            <!-- Вставка изображения -->
+                            <img src=" {% static 'assets/img/english911.jpg' %}" class="card-img-top">
+                            <div class="card-body">
+                                <h3 class="card-title">English Word Quiz</h3>
+                                <h6 class="card-title">Test your knowledge of English words</h6>
+                                <!-- Другой контент вашей карточки -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <a href="{% url 'read_student_book' %}">
+                        <div class="card h-100">
+                            <!-- Вставка изображения -->
+                            <img src=" {% static 'assets/img/callanonline-img-5.png' %}" class="card-img-top">
+                            <div class="card-body">
+                                <h3 class="card-title">Read Student’s Book</h3>
+                                <h6 class="card-title">Read Student’s Book in PDF</h6>
+                                <!-- Другой контент вашей карточки -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

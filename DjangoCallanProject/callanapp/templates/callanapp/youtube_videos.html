@@ -1,0 +1,127 @@
+{% extends 'base_templates/base.html' %}
+{% block title %}YouTube Videos{% endblock %}
+
+{% load static %}
+{% block content %}
+
+<style>
+    .video-container {
+        width: 25%;
+        float: left;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .video-container {
+            width: 50%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .video-container {
+            width: 100%;
+        }
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <title>YouTube Videos</title>
+    <link href="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="masthead" style="background-image: url({% static 'assets/img/youtube.jpeg' %}); background-size: cover; background-position: center center; height: 250px;">
+        <div class="container position-relative px-4 px-lg-5">
+        </div>
+    </header>
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h1 style="font-size: 2.5rem;">YouTube Tutorials Videos</h1>
+                    </div>
+                </div>
+            </div>
+
+        <div class="list-preview">
+            <a href="{% url 'list_of_video_files' %}">
+                <h4 class="list-title">List of video files</h4>
+            </a>
+        </div>
+    Number of videos on page: {{videos|length}}
+    <div class="video-grid" id="video-grid">
+        {% for video in videos %}
+            <div class="video-container">
+                <iframe src="{{ video.url }}" width="180" height="100" frameborder="0" allowfullscreen></iframe>
+                {{ video.title }}
+            </div>
+        {% endfor %}
+        <div class="loading-spinner" style="display: none;"><img src="{% static 'assets/img/spinner.gif' %}" alt="Loading..."></div>
+    </div>
+
+    <script src="https://unpkg.com/jquery@3/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
+    <script>
+        let infScroll = new InfiniteScroll('#video-grid', {
+            path: '?page={{ videos.next_page_number }}',
+            append: '.video-container',
+            history: false,
+            function load() {
+                // Получить номер страницы
+                const currentPage = this.pageIndex + 1;
+
+                // Сформировать URL-адрес для запроса
+                const url = new URL(window.location.href);
+                url.searchParams.set('page', currentPage);
+
+                // Отправить AJAX-запрос
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Обработать полученные данные
+                    const videos = data.videos;
+
+                    // Добавить новые видео в контейнер
+                    for (const video of videos) {
+                        const videoContainer = document.createElement('div');
+                        videoContainer.classList.add('video-container');
+                        videoContainer.innerHTML = `
+                            <iframe src="${video.url}" width="200" height="120" frameborder="0" allowfullscreen></iframe>
+                            ${video.title}
+                        `;
+
+                        document.getElementById('video-grid').appendChild(videoContainer);
+                    }
+
+                    // Скрыть индикатор загрузки
+                    document.querySelector('.loading-spinner').style.display = 'none';
+
+                    // Обновить Infinite Scroll
+                    this.instance.append(videos.length);
+
+                    // Проверить, есть ли еще страницы
+                    if (!data.next_page_url) {
+                        this.instance.disable();
+                    }
+                })
+                .catch(error => {
+                    // Обработать ошибку
+                    console.error('Ошибка при получении видео:', error);
+
+                    // Скрыть индикатор загрузки
+                    document.querySelector('.loading-spinner').style.display = 'none';
+                });
+            }
+
+            }
+        });
+    </script>
+</body>
+{% endblock %}
+
+

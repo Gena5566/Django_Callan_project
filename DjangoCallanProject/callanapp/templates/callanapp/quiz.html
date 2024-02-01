@@ -1,0 +1,85 @@
+{% extends 'base_templates/base.html' %}
+
+{% block title %}Quiz{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Word Quiz</title>
+    <style>
+        /* Здесь можно добавить стили для страницы */
+    </style>
+</head>
+<body>
+    <header class="masthead" style="background-image: url({% static 'assets/img/callan-method-logo.jpg'%});background-size: cover; background-position: center center; height: 550px;">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h2>English Word Quiz</h2>
+                        <h3>{{ level }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% if words %}
+        <form method="post" action="{% url 'word_quiz' %}">
+            {% csrf_token %}
+            {% for word in words %}
+                <div class="{% if is_correct %}correct{% else %}incorrect{% endif %}">
+                    <label for="{{ word.russian_word }}">{{ word.russian_word }}</label>
+                    <input type="text" id="{{ word.russian_word }}" name="{{ word.russian_word }}">
+                </div>
+            {% endfor %}
+            <button type="submit">Submit</button>
+        </form>
+    {% else %}
+        <p></p>
+    {% endif %}
+
+    <h1>Word Quiz Results</h1>
+    <p>Number of correct answers: {{ correct_count }}</p>
+    <p>Total number of words: {{ total_count }}</p>
+
+    {% if correct_answers %}
+        <h2>Correct Answers</h2>
+        <ul>
+            {% for answer in correct_answers %}
+                <li>Russian word: <span style="font-size: 25px;">{{ answer.russian_word }}</span> User answer: <span style="font-size: 30px;">{{ answer.user_answer }}</span> Correct Translation: <span style="font-size: 30px;">{{ answer.correct_translation }}</span></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+</body>
+</html>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

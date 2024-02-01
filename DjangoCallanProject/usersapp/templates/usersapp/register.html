@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Registration{% endblock %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Шапка страницы-->
+    <header class="masthead" style="background-image: url('{% static 'assets/img/haker.jpg' %}'); background-size: cover;">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h1>Регистрация</h1>
+                        <span class="subheading" style="font-size: 30px;">На сайте</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form method="post" enctype="multipart/form-data" class="card p-4">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary mt-3">Зарегистрироваться</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
